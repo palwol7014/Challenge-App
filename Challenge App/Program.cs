@@ -1,15 +1,41 @@
-﻿var number = 455541101387996544;
-var numberOfString = number.ToString();
-var countOfDigits = new int[10];
+﻿using Challenge_App;
 
-foreach (var character in numberOfString)
+var listEmployee = new List<Employee>
 {
-	//Bez względu na kodowanie znaków zawsze znaki cyfr 0 - 9 występują kolejno po sobie.
-	//'0' jest traktowany jako kod znaku.
-	countOfDigits[character - '0']++;
-}
+	new("Marek", "Pawłowski"),
+	new("Ilona", "Kwiecień"),
+	new("Arkadiusz", "Ryba")
+};
 
-for (var i = 0; i < countOfDigits.Length; i++)
+listEmployee[0].AddScore(2);
+listEmployee[0].AddScore(6);
+listEmployee[0].AddScore(8);
+listEmployee[0].AddScore(1);
+listEmployee[0].AddScore(1);
+
+listEmployee[1].AddScore(1);
+listEmployee[1].AddScore(2);
+listEmployee[1].AddScore(10);
+listEmployee[1].AddScore(7);
+listEmployee[1].AddScore(5);
+
+listEmployee[2].AddScore(3);
+listEmployee[2].AddScore(1);
+listEmployee[2].AddScore(6);
+listEmployee[2].AddScore(9);
+listEmployee[2].AddScore(2);
+
+listEmployee.Sort();
+listEmployee.Reverse();
+
+for (int i = 0; i < listEmployee.Count; i++)
 {
-	Console.WriteLine($"{i} => {countOfDigits[i]}");
+	if (listEmployee[0].SumScores == listEmployee[i].SumScores)
+	{
+		Console.WriteLine(listEmployee[i]);
+	}
+	else
+	{
+		break;
+	}
 }
