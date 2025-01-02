@@ -2,39 +2,91 @@
 
 namespace Challenge_App
 {
-	internal class Employee(string name, string surname) : IComparable<Employee>
+	public class Employee(string name, string surname) : IComparable<Employee>
 	{
-		private readonly List<int> scores = [];
-		private int sumScores = 0;
-		private bool isChange = false;
+		private readonly List<uint> scores = [];
+		private readonly List<uint> penatlyScores = [];
+		private uint sumScores;
+		private uint sumPenatlyScores;
+		private bool isChangeScores = false;
+		private bool isChangePenatlyScores = false;
 		public string Name { get; private set; } = name;
 		public string Surname { get; private set; } = surname;
 
-		public int[] Scores 
+		public uint[] Scores
 		{
 			get
 			{
 				return [.. scores];
-			}	
+			}
 		}
-		public int SumScores
+
+		public uint[] PenatlyScores
 		{
 			get
 			{
-				if (isChange)
+				return [.. penatlyScores];
+			}
+		}
+
+		public uint SumScores
+		{
+			get
+			{
+				if (isChangeScores)
 				{
-					sumScores = scores.Sum();
-					isChange = false;
+					sumScores = 0;
+
+					foreach (var score in scores)
+					{
+						sumScores += score;
+					}
+
+					isChangeScores = false;
 				}
 
 				return sumScores;
 			}
 		}
 
-		public void AddScore(int score)
+		public uint SumPenatlyScores
+		{
+			get
+			{
+				if (isChangePenatlyScores)
+				{
+					sumPenatlyScores = 0;
+
+					foreach (var scores in penatlyScores)
+					{
+						sumPenatlyScores += scores;
+					}
+
+					isChangePenatlyScores = false;
+				}
+
+				return sumPenatlyScores;
+			}
+		}
+
+		public int BalancePoints
+		{
+			get
+			{
+				return (int)SumScores - (int)SumPenatlyScores;
+			}
+		}
+
+		public void AddScore(uint score)
 		{
 			scores.Add(score);
-			isChange = true;
+			isChangeScores = true;
+		}
+
+		public void AddPenatlyScore(uint score)
+		{
+			penatlyScores.Add(score);
+			isChangePenatlyScores = true;
 		}
 
 		public override string ToString()
@@ -48,15 +100,40 @@ namespace Challenge_App
 				sbPoints.Append($"{point}, ");
 			}
 
-			sbPoints.Remove(sbPoints.Length - 2, 2);
-			sb.AppendLine(sbPoints.ToString()).AppendLine($"Suma punktów: {sumScores}");
+			if (scores.Count > 0)
+			{
+				sbPoints.Remove(sbPoints.Length - 2, 2);
+			}
+			else
+			{
+				sbPoints.Append("Brak");
+			}
+
+			sb.AppendLine($"Punkty: {sbPoints}").AppendLine($"Suma punktów: {SumScores}");
+			sbPoints.Clear();
+
+			foreach (var point in penatlyScores)
+			{
+				sbPoints.Append($"{point}, ");
+			}
+			
+			if(penatlyScores.Count > 0)
+			{
+				sbPoints.Remove(sbPoints.Length - 2, 2);
+			}
+			else
+			{
+				sbPoints.Append("Brak");
+			}
+
+			sb.AppendLine($"Punkty karne: {sbPoints}").AppendLine($"Suma punktów karnych: {SumPenatlyScores}").AppendLine($"Bilans punków: {BalancePoints}");
 
 			return sb.ToString();
 		}
 
 		public int CompareTo(Employee? other)
 		{
-			return SumScores.CompareTo(other?.SumScores);
+			return BalancePoints.CompareTo(other?.BalancePoints);
 		}
 	}
 }
