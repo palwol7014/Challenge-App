@@ -2,18 +2,12 @@
 
 namespace Challenge_App
 {
-	public class Employee(string name, string surname) : IComparable<Employee>
+	public class Employee(string name, string surname)
 	{
-		private readonly List<uint> scores = [];
-		private readonly List<uint> penatlyScores = [];
-		private uint sumScores;
-		private uint sumPenatlyScores;
-		private bool isChangeScores = false;
-		private bool isChangePenatlyScores = false;
 		public string Name { get; private set; } = name;
 		public string Surname { get; private set; } = surname;
-
-		public uint[] Scores
+		private readonly List<float> scores = [];
+		public float[] Scores
 		{
 			get
 			{
@@ -21,119 +15,69 @@ namespace Challenge_App
 			}
 		}
 
-		public uint[] PenatlyScores
+		public void AddScore(float score)
 		{
-			get
-			{
-				return [.. penatlyScores];
-			}
+			scores.Add(Math.Abs(score));
 		}
 
-		public uint SumScores
+		public Statistics GetStatistics()
 		{
-			get
+			Statistics statistics;
+
+			if (scores.Count > 0)
 			{
-				if (isChangeScores)
+
+				statistics = new()
 				{
-					sumScores = 0;
+					Min = float.MaxValue,
+					Max = float.MinValue
+				};
 
-					foreach (var score in scores)
-					{
-						sumScores += score;
-					}
-
-					isChangeScores = false;
+				foreach (var score in scores)
+				{
+					statistics.Min = Math.Min(score, statistics.Min);
+					statistics.Max = Math.Max(score, statistics.Max);
+					statistics.Average += score;
 				}
 
-				return sumScores;
+				statistics.Average /= scores.Count;
 			}
-		}
-
-		public uint SumPenatlyScores
-		{
-			get
+			else
 			{
-				if (isChangePenatlyScores)
-				{
-					sumPenatlyScores = 0;
-
-					foreach (var scores in penatlyScores)
-					{
-						sumPenatlyScores += scores;
-					}
-
-					isChangePenatlyScores = false;
-				}
-
-				return sumPenatlyScores;
+				statistics = new();
 			}
-		}
-
-		public int BalancePoints
-		{
-			get
-			{
-				return (int)SumScores - (int)SumPenatlyScores;
-			}
-		}
-
-		public void AddScore(uint score)
-		{
-			scores.Add(score);
-			isChangeScores = true;
-		}
-
-		public void AddPenatlyScore(uint score)
-		{
-			penatlyScores.Add(score);
-			isChangePenatlyScores = true;
+			
+			return statistics;
 		}
 
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			var sbPoints = new StringBuilder();
-			sb.AppendLine($"Imię: {Name}").AppendLine($"Nazwisko: {Surname}");
-
-			foreach (var point in scores)
-			{
-				sbPoints.Append($"{point}, ");
-			}
+			sb.AppendLine($"Pracownik {Name} {Surname}");
 
 			if (scores.Count > 0)
 			{
-				sbPoints.Remove(sbPoints.Length - 2, 2);
+				var sbPoint = new StringBuilder();
+
+				foreach (var score in scores)
+				{
+					sbPoint.Append($"{score}, ");
+				}
+
+				sb.AppendLine($"Punkty: {sbPoint.ToString(0, sbPoint.Length - 2)}");
 			}
 			else
 			{
-				sbPoints.Append("Brak");
+				sb.AppendLine("Brak punktów.");
 			}
 
-			sb.AppendLine($"Punkty: {sbPoints}").AppendLine($"Suma punktów: {SumScores}");
-			sbPoints.Clear();
+			var statistics = GetStatistics();
 
-			foreach (var point in penatlyScores)
-			{
-				sbPoints.Append($"{point}, ");
-			}
-			
-			if(penatlyScores.Count > 0)
-			{
-				sbPoints.Remove(sbPoints.Length - 2, 2);
-			}
-			else
-			{
-				sbPoints.Append("Brak");
-			}
-
-			sb.AppendLine($"Punkty karne: {sbPoints}").AppendLine($"Suma punktów karnych: {SumPenatlyScores}").AppendLine($"Bilans punków: {BalancePoints}");
+			sb.AppendLine($"Największa liczba punktów {statistics.Max}");
+			sb.AppendLine($"Najmniejsza liczba punktów {statistics.Min}");
+			sb.AppendLine($"Średnia liczba punktów {Math.Round(statistics.Average, 2, MidpointRounding.AwayFromZero)}");
 
 			return sb.ToString();
-		}
-
-		public int CompareTo(Employee? other)
-		{
-			return BalancePoints.CompareTo(other?.BalancePoints);
 		}
 	}
 }

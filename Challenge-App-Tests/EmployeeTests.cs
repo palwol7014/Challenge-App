@@ -20,46 +20,36 @@ namespace Challenge_App_Tests
 			var name = "Monika";
 			var surmane = "Mika";
 			var employee = new Employee(name, surmane);
-
+			var statistics = employee.GetStatistics();
 			Assert.Multiple(() =>
 			{
 				Assert.That(employee.Name, Is.EqualTo(name));
 				Assert.That(employee.Surname, Is.EqualTo(surmane));
-				Assert.That(employee.SumScores, Is.EqualTo(0));
+				Assert.That(statistics.Max, Is.EqualTo(0));
+				Assert.That(statistics.Min, Is.EqualTo(0));
+				Assert.That(statistics.Average, Is.EqualTo(0));
 			});
 		}
 
 		[Test]
-		public void CheckCorrectAddPoints()
+		public void CheckCorrectCalculateStatisticsEmployee()
 		{
-			employee.AddScore(3);
-			employee.AddScore(4);
+			var minNote = 2.47f;
+			var averageNote = 6.85f;
+			var maxNote = 54.68f;
+
+			employee.AddScore(minNote);
+			employee.AddScore(averageNote);
+			employee.AddScore(maxNote);
+			var average = (minNote + averageNote + maxNote) / 3;
+
+			var statistics = employee.GetStatistics();
 
 			Assert.Multiple(() =>
 			{
-				Assert.That(employee.Scores, Has.Length.EqualTo(2));
-				Assert.That(employee.Scores[0], Is.EqualTo(3));
-				Assert.That(employee.Scores[1], Is.EqualTo(4));
-				Assert.That(employee.SumScores, Is.EqualTo(3 + 4));
-			});
-		}
-
-		[Test]
-		public void CheckCorrectAddPenatlyPoints()
-		{
-			employee.AddScore(3);
-			employee.AddScore(4);
-			employee.AddPenatlyScore(5);
-
-			Assert.Multiple(() =>
-			{
-				Assert.That(employee.Scores, Has.Length.EqualTo(2));
-				Assert.That(employee.Scores[0], Is.EqualTo(3));
-				Assert.That(employee.Scores[1], Is.EqualTo(4));
-				Assert.That(employee.SumScores, Is.EqualTo(3 + 4));
-				Assert.That(employee.SumPenatlyScores, Is.EqualTo(5));
-				Assert.That(employee.PenatlyScores, Has.Length.EqualTo(1));
-				Assert.That(employee.PenatlyScores[0], Is.EqualTo(5));
+				Assert.That(statistics.Min, Is.EqualTo(minNote));
+				Assert.That(statistics.Max, Is.EqualTo(maxNote));
+				Assert.That(statistics.Average, Is.EqualTo(average));
 			});
 		}
 	}
