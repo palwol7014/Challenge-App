@@ -15,9 +15,60 @@ namespace Challenge_App
 			}
 		}
 
+		public string[] ListErrors
+		{
+			get
+			{
+				var tabListError = listErrors.ToArray();
+				listErrors.Clear();
+				return tabListError;
+			}
+		}
+		private readonly List<string> listErrors = [];
+
 		public void AddScore(float score)
 		{
-			scores.Add(Math.Abs(score));
+			if (score >= 0 && score <= 100)
+			{
+				scores.Add(Math.Abs(score));
+			}
+			else
+			{
+				listErrors.Add($"Wartość poza zakresem. Zostało podane {score}");
+			}
+		}
+
+		public void AddScore(List<float> scores)
+		{
+			foreach (var score in scores)
+			{
+				AddScore(score);
+			}
+		}
+
+		public void AddScore(string score)
+		{
+			if(float.TryParse(score, out float value))
+			{
+				AddScore(value);
+			}
+			else
+			{
+				listErrors.Add($"Nie została podana liczba. Zostało podane {score}");
+			}
+		}
+
+		public void AddScore(double score)
+		{
+			AddScore((float)score);
+		}
+
+		public void AddScore(List<double> scores)
+		{
+			foreach (var score in scores)
+			{
+				AddScore(score);
+			}
 		}
 
 		public Statistics GetStatistics()
@@ -46,7 +97,7 @@ namespace Challenge_App
 			{
 				statistics = new();
 			}
-			
+
 			return statistics;
 		}
 

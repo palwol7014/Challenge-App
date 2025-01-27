@@ -7,25 +7,47 @@ var listEmployee = new List<Employee>
 	new("Arkadiusz", "Ryba")
 };
 
-listEmployee[0].AddScore(2);
-listEmployee[0].AddScore(6);
-listEmployee[0].AddScore(8);
-listEmployee[0].AddScore(1);
-listEmployee[0].AddScore(1);
-listEmployee[0].AddScore(6);
+var isShowErrors = false;
 
-listEmployee[1].AddScore(1);
-listEmployee[1].AddScore(2);
-listEmployee[1].AddScore(10);
-listEmployee[1].AddScore(7);
-listEmployee[1].AddScore(5);
+listEmployee[0].AddScore([51.65, 41.32f, 98.3f, 56.3f, 12.32f]);
+foreach (var error in listEmployee[0].ListErrors)
+{
+	if(!isShowErrors)
+	{
+		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[0].Name} {listEmployee[0].Surname} pojawiły się następujące błędy:");
+		isShowErrors = true;
+	}
 
-listEmployee[2].AddScore(3);
-listEmployee[2].AddScore(1);
-listEmployee[2].AddScore(6);
-listEmployee[2].AddScore(9);
-listEmployee[2].AddScore(2);
+	Console.WriteLine(error);
+}
 
+isShowErrors = false;
+
+listEmployee[1].AddScore([6.5, 52.1, 61.3, 2, 1, 65]);
+foreach (var error in listEmployee[1].ListErrors)
+{
+	if (!isShowErrors)
+	{
+		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[1].Name} {listEmployee[1].Surname} pojawiły się następujące błędy:");
+		isShowErrors = true;
+	}
+
+	Console.WriteLine(error);
+}
+
+isShowErrors = false;
+
+listEmployee[2].AddScore([12.5, 85, 63.14, 43.5, 91.2, 7, 5]);
+foreach (var error in listEmployee[2].ListErrors)
+{
+	if (!isShowErrors)
+	{
+		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[2].Name} {listEmployee[2].Surname} pojawiły się następujące błędy:");
+		isShowErrors = true;
+	}
+
+	Console.WriteLine(error);
+}
 
 foreach (var employee in listEmployee)
 {
