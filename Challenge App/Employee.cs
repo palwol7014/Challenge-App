@@ -101,6 +101,100 @@ namespace Challenge_App
 			return statistics;
 		}
 
+		public Statistics GetStatisticsWithDoWhile()
+		{
+			Statistics statistics;
+
+			if (scores.Count > 0)
+			{
+
+				statistics = new()
+				{
+					Min = float.MaxValue,
+					Max = float.MinValue
+				};
+
+				int i = 0;
+
+				do
+				{
+					statistics.Min = Math.Min(scores[i], statistics.Min);
+					statistics.Max = Math.Max(scores[i], statistics.Max);
+					statistics.Average += scores[i];
+				} while (++i < scores.Count);
+
+				statistics.Average /= scores.Count;
+			}
+			else
+			{
+				statistics = new();
+			}
+
+			return statistics;
+		}
+
+		public Statistics GetStatisticsWithWhile()
+		{
+			Statistics statistics;
+
+			if (scores.Count > 0)
+			{
+
+				statistics = new()
+				{
+					Min = float.MaxValue,
+					Max = float.MinValue
+				};
+
+				int i = 0;
+
+				while (i < scores.Count)
+				{
+					statistics.Min = Math.Min(scores[i], statistics.Min);
+					statistics.Max = Math.Max(scores[i], statistics.Max);
+					statistics.Average += scores[i++];
+				} 
+
+				statistics.Average /= scores.Count;
+			}
+			else
+			{
+				statistics = new();
+			}
+
+			return statistics;
+		}
+
+		public Statistics GetStatisticsWithFor()
+		{
+			Statistics statistics;
+
+			if (scores.Count > 0)
+			{
+
+				statistics = new()
+				{
+					Min = float.MaxValue,
+					Max = float.MinValue
+				};
+
+				for(int i = 0; i < scores.Count; i++)
+				{
+					statistics.Min = Math.Min(scores[i], statistics.Min);
+					statistics.Max = Math.Max(scores[i], statistics.Max);
+					statistics.Average += scores[i];
+				} 
+
+				statistics.Average /= scores.Count;
+			}
+			else
+			{
+				statistics = new();
+			}
+
+			return statistics;
+		}
+
 		public override string ToString()
 		{
 			var sb = new StringBuilder();

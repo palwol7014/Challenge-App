@@ -4,7 +4,7 @@ var listEmployee = new List<Employee>
 {
 	new("Marek", "Pawłowski"),
 	new("Ilona", "Kwiecień"),
-	new("Arkadiusz", "Ryba")
+	new("Arkadiusz", "Ryba"),
 };
 
 var isShowErrors = false;
@@ -53,3 +53,23 @@ foreach (var employee in listEmployee)
 {
 	Console.WriteLine(employee);
 }
+
+Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli do while");
+var statistics = listEmployee[0].GetStatisticsWithDoWhile();
+Console.WriteLine($"Max {statistics.Max}");
+Console.WriteLine($"Min {statistics.Min}");
+Console.WriteLine($"Average {statistics.Average}\n");
+
+Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli while");
+statistics = listEmployee[0].GetStatisticsWithWhile();
+Console.WriteLine($"Max {statistics.Max}");
+Console.WriteLine($"Min {statistics.Min}");
+Console.WriteLine($"Average {statistics.Average}\n");
+
+Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli for");
+statistics = listEmployee[0].GetStatisticsWithFor();
+Console.WriteLine($"Max {statistics.Max}");
+Console.WriteLine($"Min {statistics.Min}");
+Console.WriteLine($"Average {statistics.Average}");
+
+//Pętla foreach wyświetla wszystkich pracowników. 
