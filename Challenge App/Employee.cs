@@ -52,6 +52,10 @@ namespace Challenge_App
 			{
 				AddScore(value);
 			}
+			else if(score.Length == 1)
+			{
+				AddScore(score[0]);
+			}
 			else
 			{
 				listErrors.Add($"Nie została podana liczba. Zostało podane {score}");
@@ -68,6 +72,59 @@ namespace Challenge_App
 			foreach (var score in scores)
 			{
 				AddScore(score);
+			}
+		}
+
+		public void AddScore(char letter)
+		{
+			switch(letter)
+			{
+				case 'a':
+				case 'A':
+					AddScore(100);
+					break;
+				case 'b':
+				case 'B':
+					AddScore(90);
+					break;
+				case 'c':
+				case 'C':
+					AddScore(80);
+					break;
+				case 'd':
+				case 'D':
+					AddScore(70);
+					break;
+				case 'e':
+				case 'E':
+					AddScore(60);
+					break;
+				case 'f':
+				case 'F':
+					AddScore(50);
+					break;
+				case 'g':
+				case 'G':
+					AddScore(40);
+					break;
+				case 'h':
+				case 'H':
+					AddScore(30);
+					break;
+				case 'i':
+				case 'I':
+					AddScore(20);
+					break;
+				case 'j':
+				case 'J':
+					AddScore(10);
+					break;
+				case 'k':
+				case 'K':
+					AddScore(0);
+					break;
+				default: listErrors.Add($"Nieprawidłowa litera, zostało podane {letter}");
+					break;
 			}
 		}
 
@@ -92,100 +149,20 @@ namespace Challenge_App
 				}
 
 				statistics.Average /= scores.Count;
-			}
-			else
-			{
-				statistics = new();
-			}
 
-			return statistics;
-		}
-
-		public Statistics GetStatisticsWithDoWhile()
-		{
-			Statistics statistics;
-
-			if (scores.Count > 0)
-			{
-
-				statistics = new()
+				statistics.AverageLetter = statistics.Average switch
 				{
-					Min = float.MaxValue,
-					Max = float.MinValue
+					>= 90 => 'A',
+					>= 80 => 'B',
+					>= 70 => 'C',
+					>= 60 => 'E',
+					>= 50 => 'F',
+					>= 40 => 'G',
+					>= 30 => 'H',
+					>= 20 => 'I',
+					>= 10 => 'J',
+					_ => 'K'
 				};
-
-				int i = 0;
-
-				do
-				{
-					statistics.Min = Math.Min(scores[i], statistics.Min);
-					statistics.Max = Math.Max(scores[i], statistics.Max);
-					statistics.Average += scores[i];
-				} while (++i < scores.Count);
-
-				statistics.Average /= scores.Count;
-			}
-			else
-			{
-				statistics = new();
-			}
-
-			return statistics;
-		}
-
-		public Statistics GetStatisticsWithWhile()
-		{
-			Statistics statistics;
-
-			if (scores.Count > 0)
-			{
-
-				statistics = new()
-				{
-					Min = float.MaxValue,
-					Max = float.MinValue
-				};
-
-				int i = 0;
-
-				while (i < scores.Count)
-				{
-					statistics.Min = Math.Min(scores[i], statistics.Min);
-					statistics.Max = Math.Max(scores[i], statistics.Max);
-					statistics.Average += scores[i++];
-				} 
-
-				statistics.Average /= scores.Count;
-			}
-			else
-			{
-				statistics = new();
-			}
-
-			return statistics;
-		}
-
-		public Statistics GetStatisticsWithFor()
-		{
-			Statistics statistics;
-
-			if (scores.Count > 0)
-			{
-
-				statistics = new()
-				{
-					Min = float.MaxValue,
-					Max = float.MinValue
-				};
-
-				for(int i = 0; i < scores.Count; i++)
-				{
-					statistics.Min = Math.Min(scores[i], statistics.Min);
-					statistics.Max = Math.Max(scores[i], statistics.Max);
-					statistics.Average += scores[i];
-				} 
-
-				statistics.Average /= scores.Count;
 			}
 			else
 			{
@@ -221,6 +198,7 @@ namespace Challenge_App
 			sb.AppendLine($"Największa liczba punktów {statistics.Max}");
 			sb.AppendLine($"Najmniejsza liczba punktów {statistics.Min}");
 			sb.AppendLine($"Średnia liczba punktów {Math.Round(statistics.Average, 2, MidpointRounding.AwayFromZero)}");
+			sb.AppendLine($"Kategoria punktowa {statistics.AverageLetter}");
 
 			return sb.ToString();
 		}

@@ -1,75 +1,70 @@
 ﻿using Challenge_App;
+using System.Text;
 
-var listEmployee = new List<Employee>
+Console.WriteLine("Witamy w aplikacji oceniania pracowników.");
+Console.WriteLine("=========================================\n");
+
+string name = "", surname = "";
+string? input;
+bool isNotCorrect;
+
+do
 {
-	new("Marek", "Pawłowski"),
-	new("Ilona", "Kwiecień"),
-	new("Arkadiusz", "Ryba"),
-};
+	Console.Write("Podaj imię pracownika: ");
+	input = Console.ReadLine();
 
-var isShowErrors = false;
-
-listEmployee[0].AddScore([51.65, 41.32f, 98.3f, 56.3f, 12.32f]);
-foreach (var error in listEmployee[0].ListErrors)
-{
-	if(!isShowErrors)
+	isNotCorrect = input?.Length == 0 || input is null;
+	if (isNotCorrect)
 	{
-		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[0].Name} {listEmployee[0].Surname} pojawiły się następujące błędy:");
-		isShowErrors = true;
+		Console.WriteLine("Nie podałeś imienia.");
 	}
-
-	Console.WriteLine(error);
-}
-
-isShowErrors = false;
-
-listEmployee[1].AddScore([6.5, 52.1, 61.3, 2, 1, 65]);
-foreach (var error in listEmployee[1].ListErrors)
-{
-	if (!isShowErrors)
+	else if(input is not null)
 	{
-		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[1].Name} {listEmployee[1].Surname} pojawiły się następujące błędy:");
-		isShowErrors = true;
+		name = input;
 	}
+} while (isNotCorrect);
 
-	Console.WriteLine(error);
-}
-
-isShowErrors = false;
-
-listEmployee[2].AddScore([12.5, 85, 63.14, 43.5, 91.2, 7, 5]);
-foreach (var error in listEmployee[2].ListErrors)
+do
 {
-	if (!isShowErrors)
+	Console.Write("Podaj nazwisko pracownika: ");
+	input = Console.ReadLine();
+
+	isNotCorrect = input?.Length == 0 || input is null;
+	if(isNotCorrect)
 	{
-		Console.WriteLine($"Podczas dodawania ocen pracownika {listEmployee[2].Name} {listEmployee[2].Surname} pojawiły się następujące błędy:");
-		isShowErrors = true;
+		Console.WriteLine("Nie podałeś nazwiska.");
 	}
+	else if(input is not null)
+	{
+		surname = input;
+	}
+} while (isNotCorrect);
 
-	Console.WriteLine(error);
-}
+var employee = new Employee(name, surname);
 
-foreach (var employee in listEmployee)
+Console.WriteLine("Wpisz oceny pracownika w formie liczb od 0 do 100 lub formie liter");
+Console.WriteLine("Wpisanie \"q\" kończy wpisywanie punktów");
+
+var sb = new StringBuilder();
+char c = 'A';
+for(int i = 0; i <= 10; i++)
 {
-	Console.WriteLine(employee);
+	sb.AppendLine($"{(char)(c + i)} - {(10 - i) * 10}");
 }
+Console.WriteLine(sb);
 
-Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli do while");
-var statistics = listEmployee[0].GetStatisticsWithDoWhile();
-Console.WriteLine($"Max {statistics.Max}");
-Console.WriteLine($"Min {statistics.Min}");
-Console.WriteLine($"Average {statistics.Average}\n");
+do
+{
+	input = Console.ReadLine();
+	if(input is not null && input != "q")
+	{
+		employee.AddScore(input);
+		var listErrors = employee.ListErrors;
+		if(listErrors.Length > 0)
+		{
+			Console.WriteLine(listErrors[0]);
+		}
+	}
+} while (input != "q");
 
-Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli while");
-statistics = listEmployee[0].GetStatisticsWithWhile();
-Console.WriteLine($"Max {statistics.Max}");
-Console.WriteLine($"Min {statistics.Min}");
-Console.WriteLine($"Average {statistics.Average}\n");
-
-Console.WriteLine($"Wyświetlenie statystyk dla {listEmployee[0].Name} {listEmployee[0].Surname} z użyciem pętli for");
-statistics = listEmployee[0].GetStatisticsWithFor();
-Console.WriteLine($"Max {statistics.Max}");
-Console.WriteLine($"Min {statistics.Min}");
-Console.WriteLine($"Average {statistics.Average}");
-
-//Pętla foreach wyświetla wszystkich pracowników. 
+Console.WriteLine(employee);
