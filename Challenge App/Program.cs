@@ -18,7 +18,7 @@ do
 	{
 		Console.WriteLine("Nie podałeś imienia.");
 	}
-	else if(input is not null)
+	else if (input is not null)
 	{
 		name = input;
 	}
@@ -30,11 +30,11 @@ do
 	input = Console.ReadLine();
 
 	isNotCorrect = input?.Length == 0 || input is null;
-	if(isNotCorrect)
+	if (isNotCorrect)
 	{
 		Console.WriteLine("Nie podałeś nazwiska.");
 	}
-	else if(input is not null)
+	else if (input is not null)
 	{
 		surname = input;
 	}
@@ -47,7 +47,7 @@ Console.WriteLine("Wpisanie \"q\" kończy wpisywanie punktów");
 
 var sb = new StringBuilder();
 char c = 'A';
-for(int i = 0; i <= 10; i++)
+for (int i = 0; i <= 10; i++)
 {
 	sb.AppendLine($"{(char)(c + i)} - {(10 - i) * 10}");
 }
@@ -56,13 +56,15 @@ Console.WriteLine(sb);
 do
 {
 	input = Console.ReadLine();
-	if(input is not null && input != "q")
+	if (input is not null && input != "q")
 	{
-		employee.AddScore(input);
-		var listErrors = employee.ListErrors;
-		if(listErrors.Length > 0)
+		try
 		{
-			Console.WriteLine(listErrors[0]);
+			employee.AddScore(input);
+		}
+		catch(Exception exp)
+		{
+			Console.WriteLine(exp.Message);
 		}
 	}
 } while (input != "q");

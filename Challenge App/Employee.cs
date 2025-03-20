@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http.Headers;
+using System.Text;
 
 namespace Challenge_App
 {
@@ -15,17 +16,6 @@ namespace Challenge_App
 			}
 		}
 
-		public string[] ListErrors
-		{
-			get
-			{
-				var tabListError = listErrors.ToArray();
-				listErrors.Clear();
-				return tabListError;
-			}
-		}
-		private readonly List<string> listErrors = [];
-
 		public void AddScore(float score)
 		{
 			if (score >= 0 && score <= 100)
@@ -34,7 +24,7 @@ namespace Challenge_App
 			}
 			else
 			{
-				listErrors.Add($"Wartość poza zakresem. Zostało podane {score}");
+				throw new Exception($"Wartość poza zakresem. Zostało podane {score}");
 			}
 		}
 
@@ -58,7 +48,7 @@ namespace Challenge_App
 			}
 			else
 			{
-				listErrors.Add($"Nie została podana liczba. Zostało podane {score}");
+				throw new Exception($"Nie została podana liczba. Zostało podane {score}");
 			}
 		}
 
@@ -123,8 +113,7 @@ namespace Challenge_App
 				case 'K':
 					AddScore(0);
 					break;
-				default: listErrors.Add($"Nieprawidłowa litera, zostało podane {letter}");
-					break;
+				default: throw new Exception($"Nieprawidłowa litera, zostało podane {letter}");
 			}
 		}
 
