@@ -2,10 +2,8 @@
 
 namespace Challenge_App
 {
-	public class Employee(string name, string surname)
+	public class Employee(string name, string surname) : Person(name, surname)
 	{
-		public string Name { get; private set; } = name;
-		public string Surname { get; private set; } = surname;
 		private readonly List<float> scores = [];
 		public float[] Scores
 		{
