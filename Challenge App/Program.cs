@@ -58,13 +58,27 @@ do
 	input = Console.ReadLine();
 	if (input is not null && input != "q")
 	{
-		try
+		if (float.TryParse(input, out float value))
 		{
-			employee.AddScore(input);
+			try
+			{
+				employee.AddScore(value);
+			}
+			catch (Exception exp)
+			{
+				Console.WriteLine(exp.Message);
+			}
 		}
-		catch(Exception exp)
+		else
 		{
-			Console.WriteLine(exp.Message);
+			try
+			{
+				employee.AddScore(input);
+			}
+			catch (Exception exp)
+			{
+				Console.WriteLine(exp.Message);
+			}
 		}
 	}
 } while (input != "q");

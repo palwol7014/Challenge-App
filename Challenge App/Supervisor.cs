@@ -2,7 +2,7 @@
 
 namespace Challenge_App
 {
-	internal class Employee(string name, string surname) : Person(name, surname), IEmployee
+	internal class Supervisor(string name, string surname) : Person(name, surname), IEmployee
 	{
 		private readonly List<float> scores = [];
 		public float[] Scores
@@ -35,13 +35,51 @@ namespace Challenge_App
 
 		public void AddScore(string score)
 		{
-			if(score.Length == 1)
+
+			if (int.TryParse(score, out int value))
 			{
-				AddScore(score[0]);
+				if (value >= 1 && value <= 6)
+				{
+					AddScore((value - 1) * 20);
+				}
+				else
+				{
+					throw new Exception($"Wartość poza zakresem. Zostało podane {score}");
+				}
+			}
+			else if (int.TryParse(score.AsSpan(0, 1), out value))
+			{
+				if (value >= 1 && value <= 4 && score[1] == '+')
+				{
+					AddScore((value - 1) * 20 + 5);
+				}
+				else if(value >= 2 && value <= 5 && score[1] == '-')
+				{
+					AddScore((value - 1) * 20 - 5);
+				}
+				else
+				{
+					throw new Exception($"Wartość poza zakresem. Zostało podane {score}");
+				}
+			}
+			else if (int.TryParse(score.AsSpan(1, 0), out value))
+			{
+				if (value >= 1 && value <= 4 && score[0] == '+')
+				{
+					AddScore((value - 1) * 20 + 5);
+				}
+				else if (value >= 2 && value <= 5 && score[0] == '-')
+				{
+					AddScore((value - 1) * 20 - 5);
+				}
+				else
+				{
+					throw new Exception($"Wartość poza zakresem. Zostało podane {score}");
+				}
 			}
 			else
 			{
-				throw new Exception($"Nie została podana liczba. Zostało podane {score}");
+				throw new Exception($"Nieprawidłowe dane. Zostało podane {score}");
 			}
 		}
 
@@ -60,7 +98,7 @@ namespace Challenge_App
 
 		public void AddScore(char letter)
 		{
-			switch(letter)
+			switch (letter)
 			{
 				case 'a':
 				case 'A':

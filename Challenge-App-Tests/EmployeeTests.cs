@@ -2,9 +2,8 @@
 
 namespace Challenge_App_Tests
 {
-	public class EmployeeTests
+	internal class EmployeeTests
 	{
-
 		[Test]
 		public void CheckCorrectCreateEmployee()
 		{
@@ -56,9 +55,9 @@ namespace Challenge_App_Tests
 
 			Assert.Multiple(() =>
 			{
-				Assert.DoesNotThrow(() => employee.AddScore("84"));
+				Assert.DoesNotThrow(() => employee.AddScore("a"));
 				Assert.Throws(Is.TypeOf<Exception>().And.Message.EqualTo(error), () => employee.AddScore(score));
-				Assert.That(employee.Scores[0], Is.EqualTo(84));
+				Assert.That(employee.Scores[0], Is.EqualTo(100));
 				Assert.That(employee.Scores, Has.Length.EqualTo(1));
 			});
 		}

@@ -1,6 +1,6 @@
 ﻿namespace Challenge_App
 {
-	public class Statistics
+	internal class Statistics
 	{
 		public float Max { get; set; }
 		public float Min { get; set; }
