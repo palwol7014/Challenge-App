@@ -2,9 +2,18 @@
 
 namespace Challenge_App
 {
-	internal class Employee(string name, string surname) : Person(name, surname), IEmployee
+	enum TypeEmployee
 	{
-		private readonly List<float> scores = [];
+		Ordinary,
+		Supervisor
+	}
+
+	internal abstract class Employee(string name, string surname, TypeEmployee type) : IEmployee
+   {
+		protected TypeEmployee type = type;
+		public string Name { get; protected set; } = name;
+		public string Surname { get; protected set; } = surname;
+		protected readonly List<float> scores = [];
 		public float[] Scores
 		{
 			get
@@ -12,7 +21,6 @@ namespace Challenge_App
 				return [.. scores];
 			}
 		}
-
 		public void AddScore(float score)
 		{
 			if (score >= 0 && score <= 100)
@@ -33,17 +41,7 @@ namespace Challenge_App
 			}
 		}
 
-		public void AddScore(string score)
-		{
-			if(score.Length == 1)
-			{
-				AddScore(score[0]);
-			}
-			else
-			{
-				throw new Exception($"Nie została podana liczba. Zostało podane {score}");
-			}
-		}
+		public abstract void AddScore(string score);
 
 		public void AddScore(double score)
 		{
@@ -60,7 +58,7 @@ namespace Challenge_App
 
 		public void AddScore(char letter)
 		{
-			switch(letter)
+			switch (letter)
 			{
 				case 'a':
 				case 'A':
@@ -153,36 +151,20 @@ namespace Challenge_App
 
 			return statistics;
 		}
-
-		public override string ToString()
+		public string GetDataToFile()
 		{
 			var sb = new StringBuilder();
-			sb.AppendLine($"Pracownik {Name} {Surname}");
 
-			if (scores.Count > 0)
+			sb.AppendLine($"{(int)type}");
+			sb.AppendLine(Name);
+			sb.AppendLine(Surname);
+			foreach (var item in scores)
 			{
-				var sbPoint = new StringBuilder();
-
-				foreach (var score in scores)
-				{
-					sbPoint.Append($"{score}, ");
-				}
-
-				sb.AppendLine($"Punkty: {sbPoint.ToString(0, sbPoint.Length - 2)}");
+				sb.AppendLine($"{item}");
 			}
-			else
-			{
-				sb.AppendLine("Brak punktów.");
-			}
+			sb.AppendLine("");
 
-			var statistics = GetStatistics();
-
-			sb.AppendLine($"Największa liczba punktów {statistics.Max}");
-			sb.AppendLine($"Najmniejsza liczba punktów {statistics.Min}");
-			sb.AppendLine($"Średnia liczba punktów {Math.Round(statistics.Average, 2, MidpointRounding.AwayFromZero)}");
-			sb.AppendLine($"Kategoria punktowa {statistics.AverageLetter}");
-
-			return sb.ToString();
+			return $"{sb}";
 		}
 	}
 }

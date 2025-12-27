@@ -1,4 +1,5 @@
 ﻿using Challenge_App;
+using System.Text;
 
 namespace Challenge_App_Tests
 {
@@ -9,7 +10,7 @@ namespace Challenge_App_Tests
 		{
 			var name = "Monika";
 			var surmane = "Mika";
-			var employee = new Employee(name, surmane);
+			var employee = new OrdinaryEmployee(name, surmane);
 			var statistics = employee.GetStatistics();
 
 			Assert.Multiple(() =>
@@ -25,7 +26,7 @@ namespace Challenge_App_Tests
 		[Test]
 		public void CheckCorrectCalculateStatisticsEmployee()
 		{
-			var employee = new Employee("Monika", "Mika");
+			var employee = new OrdinaryEmployee("Monika", "Mika");
 			var minNote = 2.47f;
 			var averageNote = 6.85f;
 			var maxNote = 54.68f;
@@ -47,25 +48,9 @@ namespace Challenge_App_Tests
 		}
 
 		[Test]
-		public void CheckCorrectAddScoreFromString()
-		{
-			var employee = new Employee("Monika", "Mika");
-			var score = "jeden";
-			var error = $"Nie została podana liczba. Zostało podane {score}";
-
-			Assert.Multiple(() =>
-			{
-				Assert.DoesNotThrow(() => employee.AddScore("a"));
-				Assert.Throws(Is.TypeOf<Exception>().And.Message.EqualTo(error), () => employee.AddScore(score));
-				Assert.That(employee.Scores[0], Is.EqualTo(100));
-				Assert.That(employee.Scores, Has.Length.EqualTo(1));
-			});
-		}
-
-		[Test]
 		public void CheckCorrectAddScoreFromListTypeOfFloat()
 		{
-			var employee = new Employee("Monika", "Mika");
+			var employee = new OrdinaryEmployee("Monika", "Mika");
 			var minNote = 2.47f;
 			var averageNote = 6.85f;
 			var maxNote = 54.68f;
@@ -86,7 +71,7 @@ namespace Challenge_App_Tests
 		[Test]
 		public void CheckCorrectAddScoreFromListTYpeOfDouble()
 		{
-			var employee = new Employee("Monika", "Mika");
+			var employee = new OrdinaryEmployee("Monika", "Mika");
 			var minNote = 2.47;
 			var averageNote = 6.85;
 			var maxNote = 54.68;
@@ -107,7 +92,7 @@ namespace Challenge_App_Tests
 		[Test]
 		public void CheckCorrectAddScoreFromLetter()
 		{
-			var employee = new Employee("Monika", "Mika");
+			var employee = new OrdinaryEmployee("Monika", "Mika");
 			var inCorrectLetter = "x";
 			var error = $"Nieprawidłowa litera, zostało podane {inCorrectLetter}";
 
@@ -121,6 +106,30 @@ namespace Challenge_App_Tests
 				Assert.That(statistics.Max, Is.EqualTo(100));
 				Assert.That(statistics.Average, Is.EqualTo((100f + 90f) / 2f));
 			});
+		}
+
+		[Test]
+		public void CheckCorrectGetDataToFile()
+		{
+			var name = "Monika";
+			var surname = "Mika";
+			Employee employee = new OrdinaryEmployee(name, surname);
+			var scores = new List<float>([5f, 3f, 2f, 1f]);
+
+			employee.AddScore(scores);
+			var dataToFileFromObject = employee.GetDataToFile();
+
+			var sb = new StringBuilder();
+			sb.AppendLine($"{(int)TypeEmployee.Ordinary}");
+			sb.AppendLine($"{employee.Name}");
+			sb.AppendLine($"{employee.Surname}");
+			foreach (var item in scores)
+			{
+				sb.AppendLine($"{item}");
+			}
+			sb.AppendLine("");
+
+			Assert.That(dataToFileFromObject, Is.EqualTo($"{sb}"));
 		}
 	}
 }

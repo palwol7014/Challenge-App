@@ -40,7 +40,7 @@ do
 	}
 } while (isNotCorrect);
 
-var employee = new Employee(name, surname);
+var employee = new OrdinaryEmployee(name, surname);
 
 Console.WriteLine("Wpisz oceny pracownika w formie liczb od 0 do 100 lub formie liter");
 Console.WriteLine("Wpisanie \"q\" kończy wpisywanie punktów");
